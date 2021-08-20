@@ -6,7 +6,7 @@
     #include <Arduino.h>
 
     #define PROGNAM "ESP32_WiFi_MQTT_Template"                                                          // program name
-    #define VERSION "v01.05"                                                                            // program version (nb lowercase 'version' is keyword)
+    #define VERSION "v01.06"                                                                            // program version (nb lowercase 'version' is keyword)
     #define PGMFUNCT ""                                                                                 // what the program does
     #define AUTHOR "JMM"                                                                                // created by
     #define CREATION_DATE "17 August 2021"                                                              // date
