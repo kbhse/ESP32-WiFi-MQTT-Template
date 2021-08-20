@@ -2,10 +2,14 @@
 #include <Arduino.h>
 #include "SimpleTimer.h"                                                                            // https://playground.arduino.cc/Code/SimpleTimer/ https://github.com/marcelloromani/arduino/tree/master/SimpleTimer
 #include "EmonLib.h"                                                                                // https://github.com/openenergymonitor/EmonLib
-//#include <driver/adc.h>                                                                           // for ESP32
+#include <driver/adc.h>                                                                           // for ESP32
 
 #include "config.h"
 #include "WiFiMQTT.h"
+
+// Force EmonLib to use 10bit ADC resolution
+#define ADC_BITS    10
+#define ADC_COUNTS  (1<<ADC_BITS)
 
 // ------------------------------------------------------------------
 // Create Instances
@@ -15,7 +19,7 @@ PubSubClient client(PUB_SUB_CLIENT);
 SimpleTimer timer;
 EnergyMonitor emon1;
 
-long updateFreq = 60000;                                                    // DEFAULT update frequency for sensors and publish to MQTT (milliseconds)
+long updateFreq = 250;                                                    // DEFAULT update frequency for sensors and publish to MQTT (milliseconds)
 int timerID;
 bool restartFlg;                                                            // used to flag restarts so reconnect() will publish notification of restart to MQTT topic /sysMessage
 long lastMqttReconnectAttempt = 0;
@@ -24,10 +28,17 @@ long lastMqttReconnectAttempt = 0;
 void setup()
   {
     
-  Serial.begin(9600);
+  Serial.begin(115200);
   //#ifdef DEBUG_OUT
       Serial.printf("\n\n%s_%s, %s, %s, %s, %s\n\n", PROGNAM, VERSION, AUTHOR, CREATION_DATE, MQTT_DEVICE, MQTT_LOCATION);
   //#endif
+
+  adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_11);
+  analogReadResolution(10);
+
+  // Initialize emon library (30 = calibration number)
+  emon1.current(ADC_INPUT, 30);
+
   pinMode(lamp, OUTPUT);                                                       // onboard LED
   #ifdef LED_STARTS_OFF
     digitalWrite(lamp, HIGH);                                                  // turn onboard LED OFF

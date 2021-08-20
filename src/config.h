@@ -5,8 +5,8 @@
 
     #include <Arduino.h>
 
-    #define PROGNAM "ESP8266_WiFi_MQTT_Template"                                                        // program name
-    #define VERSION "v01.03"                                                                            // program version (nb lowercase 'version' is keyword)
+    #define PROGNAM "ESP32_WiFi_MQTT_Template"                                                          // program name
+    #define VERSION "v01.04"                                                                            // program version (nb lowercase 'version' is keyword)
     #define PGMFUNCT ""                                                                                 // what the program does
     #define AUTHOR "J Manson"                                                                           // created by
     #define CREATION_DATE "17 August 2021"                                                              // date
@@ -15,28 +15,28 @@
 
 
 
-    #define ADC_INPUT 34                            // the pin were the CT sensor is connected
+    #define ADC_INPUT 34                            // the pin where the CT sensor is connected
     #define HOME_VOLTAGE 244                        // the house voltage
 
     const int lamp = LED_BUILTIN;
-    long MQTTupdateFreq = 60000;                    // 1 minute (the update frequency to publish data to MQTT (milliseconds))
+    //long MQTTupdateFreq = 10000;                    // 1 minute (the update frequency to publish data to MQTT (milliseconds))
     //#define UPDATE_FREQ 60000L                    // 60 seconds
 
     // ------------------------------------------------------------------
     // MCU Hardware
 
     //#define MCU "ESP8266 D1 Mini"
-    #define MCU "ESP8266 D1 Mini Pro V2"
-    //#define MCU "ESP32 Dev board"
+    //#define MCU "ESP8266 D1 Mini Pro V2"
+    #define MCU "ESP32 Dev board"
     //#define MCU "ESP32 D1 Mini"
 
     // ------------------------------------------------------------------
     // Configure MQTT
     // (unique number for each ESP8266 device and edit the next 2 #defines accordingly)
 
-        #define MQTT_DEVICE "esp030"                                                                       // MQTT requires unique device ID (see reconnect() function)
-        #define PUB_SUB_CLIENT esp030client                                                                // and unique client ?
-        #define MQTT_LOCATION "roaming30"                                                                    // location for MQTT topic
+        #define MQTT_DEVICE "esp031"                                                                       // MQTT requires unique device ID (see reconnect() function)
+        #define PUB_SUB_CLIENT esp031client                                                                // and unique client ?
+        #define MQTT_LOCATION "roaming31"                                                                    // location for MQTT topic
 
     // ------------------------------------------------------------------
     // specify which MQTT Server to connect to
@@ -82,7 +82,7 @@
     // ------------------------------------------------------------------
     // Comment out sensors not in use
 
-        #define WEMOS_SHT30 "SHT30 "                                                                              // Wemos Temperature and Humidity shield
+        //#define WEMOS_SHT30 "SHT30 "                                                                              // Wemos Temperature and Humidity shield
         //#define WEMOS_HP303 "HP303 "                                                                              // Wemos Barometric Pressure Shield
         //#define WEMOS_BH1750 "BH1750 "                                                                            // Wemos Ambient Light Shield
         //#define WEMOS_BATTERY "BATTERY "                                                                          // Wemos Battery Shield
@@ -92,6 +92,7 @@
         //#define ROBOTDYN_ACDIMMER "ACDIMMER "                                                                     // Robotdyn zero-crossing detector and AC dimmer module
         //#define MLX90614_IR_SENSOR "IR "                                                                          // IR temp sensor
         //#define DS18B20 "DS18B20"                                                                                 // 1-wire temperature sensor
+        #define CURRENT_SENSOR                                                                                      // YHDC SCT-013 CT Sensor
 
 /*
     // ------------------------------------------------------------------------------------------------

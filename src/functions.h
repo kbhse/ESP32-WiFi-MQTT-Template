@@ -9,6 +9,7 @@
 
     extern long updateFreq;
     extern PubSubClient client;
+    extern EnergyMonitor emon1;
 
     // ------------------------------------------------------------------
     // functions:
@@ -24,9 +25,10 @@
 
     // ------------------------------------------------------------------
     // Create Instances
-   
-    SHT3X sht30(0x45);                                                                              // SHT30 shield has two user selectable I2C addresses
-
+    
+    #ifdef WEMOS_SHT30
+        SHT3X sht30(0x45);                                                                              // SHT30 shield has two user selectable I2C addresses
+    #endif
 
     // ------------------------------------------------------------------------------------------------
     float calcVPD(float T, float RH)
@@ -134,57 +136,89 @@
     // read sensors and send data to MQTT
 
         {
-        // SHT30
-        #ifdef DEBUG_OUT
-            Serial.println(F("Reading the SHT30 for MQTT: "));
-        #endif
-        static char temperatureTemp[7];         // client.publish() expects char array
-        static char humidityTemp[7];
-        static char vpdTemp[7];
-        float temperature = 0;
-        float humidity = 0;
-        float VPD = 0;
-        sht30.get();
-        temperature = sht30.cTemp;              // float temperature = sht30.cTemp   !!!
-
-        if (temperature > 100)                  // restart ESP8266 ON INSANE METRICS
-            {
+        #ifdef WEMOS_SHT30
             #ifdef DEBUG_OUT
-                Serial.println("Insane metrics, Restarting ESP8266..");
+                Serial.println(F("Reading the SHT30 for MQTT: "));
             #endif
-            static char restartMessage[40] = "Insane metrics, Restarting ESP8266..";
-            client.publish(MQTT_LOCATION "/sysMessage", restartMessage);
-            delay(3000);
-            ESP.restart();
-            }
+            static char temperatureTemp[7];         // client.publish() expects char array
+            static char humidityTemp[7];
+            static char vpdTemp[7];
+            float temperature = 0;
+            float humidity = 0;
+            float VPD = 0;
+            sht30.get();
+            temperature = sht30.cTemp;              // float temperature = sht30.cTemp   !!!
 
-        humidity = sht30.humidity;
-        dtostrf(temperature, 6, 2, temperatureTemp);                            // convert float to char array
-        dtostrf(humidity, 6, 2, humidityTemp);
-        client.publish(MQTT_LOCATION "/temperature", temperatureTemp);
-        client.publish(MQTT_LOCATION "/humidity", humidityTemp);
-        VPD = calcVPD(temperature, humidity);
-        dtostrf(VPD, 6, 2, vpdTemp);                                            // convert float to char array
-        client.publish(MQTT_LOCATION "/mcuVPD", vpdTemp);
-        #ifdef DEBUG_OUT
-            Serial.print("Temperature: ");
-            Serial.println(temperatureTemp);
-            Serial.print("Humidity: ");
-            Serial.println(humidityTemp);
-            Serial.print("VPD: ");
-            Serial.println(vpdTemp);
+            if (temperature > 100)                  // restart ESP8266 ON INSANE METRICS
+                {
+                #ifdef DEBUG_OUT
+                    Serial.println("Insane metrics, Restarting ESP8266..");
+                #endif
+                static char restartMessage[40] = "Insane metrics, Restarting ESP8266..";
+                client.publish(MQTT_LOCATION "/sysMessage", restartMessage);
+                delay(3000);
+                ESP.restart();
+                }
+
+            humidity = sht30.humidity;
+            dtostrf(temperature, 6, 2, temperatureTemp);                            // convert float to char array
+            dtostrf(humidity, 6, 2, humidityTemp);
+            client.publish(MQTT_LOCATION "/temperature", temperatureTemp);
+            client.publish(MQTT_LOCATION "/humidity", humidityTemp);
+            VPD = calcVPD(temperature, humidity);
+            dtostrf(VPD, 6, 2, vpdTemp);                                            // convert float to char array
+            client.publish(MQTT_LOCATION "/mcuVPD", vpdTemp);
+            #ifdef DEBUG_OUT
+                Serial.print("Temperature: ");
+                Serial.println(temperatureTemp);
+                Serial.print("Humidity: ");
+                Serial.println(humidityTemp);
+                Serial.print("VPD: ");
+                Serial.println(vpdTemp);
+            #endif
         #endif
-        // Battery voltage
-        static char voltageTemp[7];                                                                // client.publish() expects char array
-        int adc = analogRead(0);                                                                   // read the ESP ADC (connected to battery)
-        float voltage = (adc * 4.335) / 1024;                                                      // calculate the voltage (fsd 4.335v)
-        dtostrf(voltage, 6, 2, voltageTemp);                                                       // convert float to char array
-        client.publish(MQTT_LOCATION "/voltage", voltageTemp);                                     // publish to MQTT
-        //RSSI
-        int rssi = WiFi.RSSI();                                                                    // get RSSI (received signal strength indicator) of WiFi connection
-        static char rssiStr[5];
-        itoa(rssi, rssiStr, 10);
-        client.publish(MQTT_LOCATION "/rssi", rssiStr);
+
+        #ifdef WEMOS_BATTERY
+            static char voltageTemp[7];                                                                // client.publish() expects char array
+            int adc = analogRead(0);                                                                   // read the ESP ADC (connected to battery)
+            float voltage = (adc * 4.335) / 1024;                                                      // calculate the voltage (fsd 4.335v)
+            dtostrf(voltage, 6, 2, voltageTemp);                                                       // convert float to char array
+            client.publish(MQTT_LOCATION "/voltage", voltageTemp);                                     // publish to MQTT
+        #endif
+
+        #ifdef WIFI_RSSI            
+            int rssi = WiFi.RSSI();                                                                    // get RSSI (received signal strength indicator) of WiFi connection
+            static char rssiStr[5];
+            itoa(rssi, rssiStr, 10);
+            client.publish(MQTT_LOCATION "/rssi", rssiStr);
+        #endif
+
+        #ifdef CURRENT_SENSOR
+            static char ampsTemp[7];                                                                // client.publish() expects char array
+            static char wattsTemp[7];
+            double amps = emon1.calcIrms(1480); // Calculate Irms only
+            double watts = amps * HOME_VOLTAGE;
+            itoa(amps, ampsTemp, 10);                                                               // convert integer to string (base 10)
+            itoa(watts, wattsTemp, 10);
+            client.publish(MQTT_LOCATION "/amps", ampsTemp);                                        // publish to MQTT
+            client.publish(MQTT_LOCATION "/watts", wattsTemp);
+            #ifdef DEBUG_OUT
+                Serial.print("Amps: ");
+                Serial.println(amps);
+                Serial.print("Watts: ");
+                Serial.println(watts);
+            #endif
+        #endif
+
+/*
+        // ESP32 AC test
+        static char adcTemp[7];                                                                     // client.publish() expects char array
+        int adc = analogRead(34);                                                                   // read the ESP ADC (connected to battery)
+        itoa(adc, adcTemp, 10);
+        client.publish(MQTT_LOCATION "/adc", adcTemp);
+        Serial.print("ADC: ");
+        Serial.println(adc);
+*/
 
         }   // end of readSensors()
 
