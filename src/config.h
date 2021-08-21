@@ -6,7 +6,7 @@
     #include <Arduino.h>
 
     #define PROGNAM "ESP32_WiFi_MQTT_Template"                                                          // program name
-    #define VERSION "v01.06"                                                                            // program version (nb lowercase 'version' is keyword)
+    #define VERSION "v01.08"                                                                            // program version (nb lowercase 'version' is keyword)
     #define PGMFUNCT ""                                                                                 // what the program does
     #define AUTHOR "JMM"                                                                                // created by
     #define CREATION_DATE "17 August 2021"                                                              // date
@@ -41,13 +41,13 @@
     // ------------------------------------------------------------------
     // specify which MQTT Server to connect to
 
-        const char* mqtt_server = "192.168.1.100";              // raspi03-01
-        const char* mqttUser = "mqttUser2";
-        const char* mqttPassword = "jR5b73Wklx";
+        //const char* mqtt_server = "192.168.1.100";              // raspi03-01
+        //const char* mqttUser = "mqttUser2";
+        //const char* mqttPassword = "jR5b73Wklx";
 
-        //const char* mqtt_server = "192.168.1.138";                // raspi4-03
-        //const char* mqttUser = "mqttUser";
-        //const char* mqttPassword = "kP7fWB5gVA";
+        const char* mqtt_server = "192.168.1.138";                // raspi4-03
+        const char* mqttUser = "mqttUser";
+        const char* mqttPassword = "kP7fWB5gVA";
 
         const int mqttPort = 1883;
 
@@ -92,7 +92,8 @@
         //#define ROBOTDYN_ACDIMMER "ACDIMMER "                                                                     // Robotdyn zero-crossing detector and AC dimmer module
         //#define MLX90614_IR_SENSOR "IR "                                                                          // IR temp sensor
         //#define DS18B20 "DS18B20"                                                                                 // 1-wire temperature sensor
-        #define CURRENT_SENSOR                                                                                      // YHDC SCT-013 CT Sensor
+        #define CURRENT_SENSOR                                                                                    // YHDC SCT-013 CT Sensor
+        //#define ADC_TEST                                                                                            // test
 
 /*
     // ------------------------------------------------------------------------------------------------

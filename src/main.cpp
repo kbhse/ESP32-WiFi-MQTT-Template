@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "SimpleTimer.h"                                                                            // https://playground.arduino.cc/Code/SimpleTimer/ https://github.com/marcelloromani/arduino/tree/master/SimpleTimer
 #include "EmonLib.h"                                                                                // https://github.com/openenergymonitor/EmonLib
-#include <driver/adc.h>                                                                           // for ESP32
+#include <driver/adc.h>                                                                             // for ESP32
 
 #include "config.h"
 #include "WiFiMQTT.h"
@@ -19,7 +19,7 @@ PubSubClient client(PUB_SUB_CLIENT);
 SimpleTimer timer;
 EnergyMonitor emon1;
 
-long updateFreq = 250;                                                    // DEFAULT update frequency for sensors and publish to MQTT (milliseconds)
+long updateFreq = 1000;                                                      // DEFAULT update frequency for sensors and publish to MQTT (milliseconds)
 int timerID;
 bool restartFlg;                                                            // used to flag restarts so reconnect() will publish notification of restart to MQTT topic /sysMessage
 long lastMqttReconnectAttempt = 0;

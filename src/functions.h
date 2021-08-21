@@ -210,15 +210,15 @@
             #endif
         #endif
 
-/*
-        // ESP32 AC test
-        static char adcTemp[7];                                                                     // client.publish() expects char array
-        int adc = analogRead(34);                                                                   // read the ESP ADC (connected to battery)
-        itoa(adc, adcTemp, 10);
-        client.publish(MQTT_LOCATION "/adc", adcTemp);
-        Serial.print("ADC: ");
-        Serial.println(adc);
-*/
+        #ifdef ADC_TEST
+            // ESP32 ADC test
+            static char adcTemp[7];                                                                     // client.publish() expects char array
+            int adc = analogRead(34);                                                                   // read the ESP ADC (connected to battery)
+            itoa(adc, adcTemp, 10);
+            client.publish(MQTT_LOCATION "/adc", adcTemp);
+            Serial.print("ADC: ");
+            Serial.println(adc);
+        #endif
 
         }   // end of readSensors()
 
