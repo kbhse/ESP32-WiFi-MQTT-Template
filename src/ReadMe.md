@@ -21,3 +21,6 @@ MQTT code from: https://randomnerdtutorials.com/raspberry-pi-publishing-mqtt-mes
                 https://github.com/knolleary/pubsubclient
 https://savjee.be/2019/07/Home-Energy-Monitor-ESP32-CT-Sensor-Emonlib/
 
+grafana mqtt buttons
+
+reduce database entries. 

@@ -6,7 +6,7 @@
     #include <Arduino.h>
 
     #define PROGNAM "ESP32_WiFi_MQTT_Template"                                                          // program name
-    #define VERSION "v01.08"                                                                            // program version (nb lowercase 'version' is keyword)
+    #define VERSION "v01.10"                                                                            // program version (nb lowercase 'version' is keyword)
     #define PGMFUNCT ""                                                                                 // what the program does
     #define AUTHOR "JMM"                                                                                // created by
     #define CREATION_DATE "17 August 2021"                                                              // date
@@ -17,6 +17,8 @@
 
     #define ADC_INPUT 34                            // the pin where the CT sensor is connected
     #define HOME_VOLTAGE 244                        // the house voltage
+    #define CALIBRATION 29                          // the calibration number for the SCT-013-030 Current sensor
+                                                    // 1800 turns / 62 ohms
 
     const int lamp = LED_BUILTIN;
     //long MQTTupdateFreq = 10000;                    // 1 minute (the update frequency to publish data to MQTT (milliseconds))

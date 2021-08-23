@@ -36,8 +36,8 @@ void setup()
   adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_DB_11);
   analogReadResolution(10);
 
-  // Initialize emon library (30 = calibration number)
-  emon1.current(ADC_INPUT, 30);
+  // Initialize emon library
+  emon1.current(ADC_INPUT, CALIBRATION);
 
   pinMode(lamp, OUTPUT);                                                       // onboard LED
   #ifdef LED_STARTS_OFF
