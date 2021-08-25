@@ -6,9 +6,9 @@
     #include <Arduino.h>
 
     #define PROGNAM "ESP32_WiFi_MQTT_Template"                                                          // program name
-    #define VERSION "v01.10"                                                                            // program version (nb lowercase 'version' is keyword)
+    #define VERSION "v01.11"                                                                            // program version (nb lowercase 'version' is keyword)
     #define PGMFUNCT ""                                                                                 // what the program does
-    #define AUTHOR "JMM"                                                                                // created by
+    #define AUTHOR ""                                                                                   // created by
     #define CREATION_DATE "17 August 2021"                                                              // date
     #define MODIFIED_DATE "20 August 2021"
     #define DEBUG_OUT
@@ -16,7 +16,7 @@
 
 
     #define ADC_INPUT 34                            // the pin where the CT sensor is connected
-    #define HOME_VOLTAGE 244                        // the house voltage
+    #define HOME_VOLTAGE 243                        // the house voltage
     #define CALIBRATION 29                          // the calibration number for the SCT-013-030 Current sensor
                                                     // 1800 turns / 62 ohms
 
@@ -45,40 +45,40 @@
 
         //const char* mqtt_server = "192.168.1.100";              // raspi03-01
         //const char* mqttUser = "mqttUser2";
-        //const char* mqttPassword = "jR5b73Wklx";
+        //const char* mqttPassword = "********";
 
         const char* mqtt_server = "192.168.1.138";                // raspi4-03
         const char* mqttUser = "mqttUser";
-        const char* mqttPassword = "kP7fWB5gVA";
+        const char* mqttPassword = "********";
 
         const int mqttPort = 1883;
 
     // ------------------------------------------------------------------
     // specify which WiFi network to connect to (only 1 should be active)
 
-        #define BTHUB6                      // BTHub in Weights Room
-        //#define EXT_BTHUB6                // WiFi Extender in Gym
+        #define BTHUB6                      // BTHub
+        //#define EXT_BTHUB6                // WiFi Extender
         //#define BTHUBKBHSE                // NB not useable with this code because no MQTT Server on KBHSE Network
-        //#define LINKSYS                   // Linksys Router in Garage
+        //#define LINKSYS                   // Linksys Router
 
-        #ifdef BTHUB6                                                                                       // BTHub in Weights Room
+        #ifdef BTHUB6                                                                                       // BTHub
             const char* ssid = "BTHub6-7N5K";
-            const char* password = "QeC3RCJGeUvx";
+            const char* password = "*********";
         #endif
 
-        #ifdef EXT_BTHUB6                                                                                   // WiFi Extender in Gym
+        #ifdef EXT_BTHUB6                                                                                   // WiFi Extender
             const char* ssid = "EXT-BTHub6-7N5K";          
-            const char* password = "QeC3RCJGeUvx";
+            const char* password = "*********";
         #endif
 
-        #ifdef LINKSYS                                                                                      // Linksys Router in Garage
+        #ifdef LINKSYS                                                                                      // Linksys Router
             const char* ssid = "linksys";                                                                   // BTHub WiFi credentials
-            const char* password = "rhenigidale";
+            const char* password = "********";
         #endif
 
         #ifdef BTHUBKBHSE
             const char* ssid = "BT-HZA8HJ";                                                                 // KBHSE BTHub WiFi credentials
-            const char* password = "fyurGVup6qru3H";
+            const char* password = "************";
         #endif
 
     // ------------------------------------------------------------------
