@@ -9,7 +9,7 @@
             That should solve your MQTT multiple connections problem
 
 
-if is starts without a wifi signal meed code in loop() to periodically try to connect, simlar to MQTT server connection
+if it starts without a wifi signal need code in loop() to periodically try to connect, simlar to MQTT server connection
 
 change name from client to MQTTclient
 
